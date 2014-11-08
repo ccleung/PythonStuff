@@ -21,6 +21,16 @@ adjacency_list = {
 
 graph = Graph(adjacency_list)
 
-
 #def test_bfs_traverses_all_nodes():
+
+print 'bfs:'
 bfs(graph, a)
+print '\n'
+
+# reset values
+for key in adjacency_list:
+	key.processed = False
+	key.discovered = False
+
+print 'dfs:'
+dfs(graph, a)

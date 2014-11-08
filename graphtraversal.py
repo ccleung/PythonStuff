@@ -12,5 +12,11 @@ def bfs(graph, start_node):
 		print node.value
 		node.processed = True
 
-def dfs(grapn, start_node):
-	print start_node
+def dfs(graph, node):
+	node.discovered = True
+	for edge_node in graph.get_adjacency_list(node):
+		if not edge_node.discovered:
+			dfs(graph, edge_node)
+	if not node.processed:
+		print node.value
+		node.processed = True
