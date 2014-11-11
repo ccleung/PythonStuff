@@ -3,6 +3,7 @@ import Queue
 def bfs(graph, start_node):
 	queue = Queue.Queue()
 	queue.put(start_node)
+	start_node.discovered = True
 	while not queue.empty():
 		node = queue.get()
 		for edge_node in graph.get_adjacency_list(node):
