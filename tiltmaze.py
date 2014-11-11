@@ -1,10 +1,10 @@
-#from enum import Enum
+from enum import Enum
 
-#class Direction(Enum):
-#	left = 1
-#	up = 2
-#	right = 3
-#	down = 4
+class Direction(Enum):
+	left = 1
+	up = 2
+	right = 3
+	down = 4
 
 '''
 'o' is an open position, 'x' is a wall within the maze
@@ -58,47 +58,43 @@ class Position:
 
 def withinHorizontalLimits(x):
 	horizontalMax = len(maze[0])
-	print "HORIZONTAL MAX: %s" % horizontalMax
 	return x >= 0 and x < horizontalMax
 
 def withinVerticalLimits(y):
 	verticalMax = len(maze)
-	print "VERTICAL MAX: %s" % verticalMax
 	return y >= 0 and y < verticalMax
 
 def moveOneStep(position, direction):
 	return {
-			'left' : Position(position.x - 1, position.y),
-			'up' : Position(position.x, position.y - 1),
-			'right' : Position(position.x + 1, position.y),
-			'down' : Position(position.x, position.y + 1),
+			Direction.left : Position(position.x - 1, position.y),
+			Direction.up : Position(position.x, position.y - 1),
+			Direction.right : Position(position.x + 1, position.y),
+			Direction.down : Position(position.x, position.y + 1),
 	}[direction]
 
 def getNextPosition(position, direction):
 	newPosition = position
-	print "NEW POSITION INIT"
-	while (withinHorizontalLimits(newPosition.x) and withinVerticalLimits(newPosition.y) and maze[newPosition.y][newPosition.x] != 'x'):
-		newPosition = moveOneStep(newPosition, direction)
-		print 'incrementing '
-		newPosition.printPosition()
+	proposedPosition = moveOneStep(newPosition, direction)
+	while (withinHorizontalLimits(proposedPosition.x) and withinVerticalLimits(proposedPosition.y) and maze[proposedPosition.y][proposedPosition.x] != 'x'):
+		newPosition = proposedPosition
+		proposedPosition = moveOneStep(newPosition, direction)
 	return newPosition
 
 
-result = getNextPosition(Position(), 'right')
-result.printPosition()
-print '##################some initial tests'
+def getNextPositions(position):
+	print "START ###################"
+	for direction in Direction:
+		result = getNextPosition(position, direction)
+		print(direction)
+		result.printPosition()
+	print "END   ###################"
 
-result = getNextPosition(Position(), 'left')
-result.printPosition()
-print '##################some initial tests'
+middlePosition = Position(4, 3)
 
-result = getNextPosition(Position(), 'up')
-result.printPosition()
-print '##################some initial tests'
+getNextPositions(Position())
 
-result = getNextPosition(Position(), 'down')
-result.printPosition()
-print '##################some initial tests'
+getNextPositions(middlePosition)
+#reult =
 
 
 
