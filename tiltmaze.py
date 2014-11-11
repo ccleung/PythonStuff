@@ -30,6 +30,8 @@ y = 0
 x = 0
 maze[y][x] = '0'
 
+maze[1][4] = 'x'
+
 maze[0][5] = 'x'
 maze[0][7] = 'x'
 maze[4][7] = 'x'
@@ -78,6 +80,7 @@ def getNextPosition(position, direction):
 	while (withinHorizontalLimits(proposedPosition.x) and withinVerticalLimits(proposedPosition.y) and maze[proposedPosition.y][proposedPosition.x] != 'x'):
 		newPosition = proposedPosition
 		proposedPosition = moveOneStep(newPosition, direction)
+
 	return newPosition
 
 
