@@ -15,9 +15,12 @@ def bfs(graph, start_node):
 
 def dfs(graph, node):
 	node.discovered = True
+	# evaluate the node as we visit it
+	print node.value
 	for edge_node in graph.get_adjacency_list(node):
 		if not edge_node.discovered:
 			dfs(graph, edge_node)
-	if not node.processed:
-		print node.value
-		node.processed = True
+	# this is post order
+	#if not node.processed:
+	#	print node.value
+	node.processed = True

@@ -11,12 +11,13 @@ f = Node('f')
 g = Node('g')
 
 adjacency_list = {
-	a : [b, c],
-	b : [c, d],
-	c : [d],
-	d : [c , e],
-	e : [f],
-	f : [c]
+	a : [b, c, e],
+	b : [d, f],
+	c : [g],
+	d : [],
+	e : [],
+	f : [e],
+	g : []
 }
 
 graph = Graph(adjacency_list)
