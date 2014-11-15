@@ -4,6 +4,7 @@ class Position(object):
 		self.y = y
 		# don't set prev if it is ourselves, end up in an endless loop!
 		self._prev_position = prev_position
+		self.value = 0
 
 	@property 
 	def prev_position(self):
@@ -18,6 +19,6 @@ class Position(object):
 			self._prev_position = p
 
 	def __str__(self):
-		return "Position %s %s and Parent: %s %s" % (self.x, self.y, 
+		return "Position %s %s, value: %s and Parent: %s %s" % (self.x, self.y, self.value,
 														self.prev_position.x if self.prev_position is not None else 'None', 
 														self.prev_position.y if self.prev_position is not None else 'None')

@@ -109,9 +109,7 @@ end_position = FindMazePath(Position(0, 0))
 print "END POSITION: %s" % str(end_position)
 
 connected_position = end_position
-while (connected_position is not None):
-	print "trace back: %s" % str(connected_position)
-	connected_position = connected_position.prev_position
+printPath(connected_position)
 
 
 

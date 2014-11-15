@@ -20,3 +20,8 @@ def moveOneStep(position, direction):
 			Direction.down : Position(position.x, position.y + 1),
 	}[direction]
 
+def printPath(connected_position):
+	while (connected_position is not None):
+		print "trace back: %s" % str(connected_position)
+		connected_position = connected_position.prev_position
+
