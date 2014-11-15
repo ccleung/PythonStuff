@@ -90,7 +90,7 @@ def printResults():
 
 printResults()
 
-def findLongestIncreasingPath(curr_pos):
+def findLongestIncreasingPath(curr_pos, start_indexes_evaluated):
 	global max_step_value
 	global last_position_in_longest_path
 	# this should only happened once. For the very first position put in
@@ -105,17 +105,36 @@ def findLongestIncreasingPath(curr_pos):
 		# check if our position is still visitable, because some other path might have come here
 		# first during recursive dfs
 		if isPositionVisitable(position, next_pos):
-			# since next_pos already went through validation and is a valid next step
-			# capture steps taken by adding 1 more to our aggregate count stored in positions_history[y][x]
-			next_pos.value = position.value + 1
-			next_pos.prev_position = position
-		findLongestIncreasingPath(next_pos)
+			# only evaluate
+			if next_pos not in start_indexes_evaluated:
+				# since next_pos already went through validation and is a valid next step
+				# capture steps taken by adding 1 more to our aggregate count stored in positions_history[y][x]
+				next_pos.value = position.value + 1
+				next_pos.prev_position = position
+				findLongestIncreasingPath(next_pos, start_indexes_evaluated)
+			else:
+				# attach to the already evaluated start_index and finish
+				next_pos.prev_position = curr_pos
 
-findLongestIncreasingPath(Position(0,0))
-printResults()
+def goBananasEvaluateAtEachIndex():
+	set_of_start_indexes_evaluated = set()
+	for idy, x in enumerate(xrange(max_height)):
+		for idx, x in enumerate(xrange(max_width)):
+			position = positionsHistoryValueAt(Position(idx, idy))
+			if position.value > 0:
+				#already evaluated
+				continue
+				# if we intersect with any of the previously evaluated nodes, we have to add on
+				# if we intersect with a node that has already been evaluated, check against 
+				# the node's current value as always
+			findLongestIncreasingPath(Position(idx,idy), set_of_start_indexes_evaluated)
+			set_of_start_indexes_evaluated.add(position)
+	for x in set_of_start_indexes_evaluated:
+		print x
+
+goBananasEvaluateAtEachIndex()
 
 print "LAST NODE: %s" % last_position_in_longest_path
-
 print "PATH TO BEGINNING: "
 printPath(last_position_in_longest_path)
 
