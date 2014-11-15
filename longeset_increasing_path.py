@@ -102,10 +102,13 @@ def findLongestIncreasingPath(curr_pos):
 			max_step_value = position.value
 			last_position_in_longest_path = position
 	for next_pos in getNextPositions(numbers, position):
-		# since next_pos already went through validation and is a valid next step
-		# capture steps taken by adding 1 more to our aggregate count stored in positions_history[y][x]
-		next_pos.value = position.value + 1
-		next_pos.prev_position = position
+		# check if our position is still visitable, because some other path might have come here
+		# first during recursive dfs
+		if isPositionVisitable(position, next_pos):
+			# since next_pos already went through validation and is a valid next step
+			# capture steps taken by adding 1 more to our aggregate count stored in positions_history[y][x]
+			next_pos.value = position.value + 1
+			next_pos.prev_position = position
 		findLongestIncreasingPath(next_pos)
 
 findLongestIncreasingPath(Position(0,0))
