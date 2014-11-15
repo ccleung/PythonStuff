@@ -47,7 +47,7 @@ def getNextPosition(grid, position, direction):
 	return newPosition
 
 def isValidPosition(grid, position):
-	return withinHorizontalLimits(grid, position.x) and withinVerticalLimits(grid, position.y) and grid[position.y][position.x] != 'x'
+	return withinGridLimits(grid, position) and grid[position.y][position.x] != 'x'
 
 size = 8
 maze = [ ['o' for x in xrange(size)] for x in xrange(size) ]

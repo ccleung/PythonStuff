@@ -9,6 +9,9 @@ def withinVerticalLimits(grid, y):
 	verticalMax = len(grid)
 	return y >= 0 and y < verticalMax
 
+def withinGridLimits(grid, position):
+	return withinHorizontalLimits(grid, position.x) and withinVerticalLimits(grid, position.y)
+
 def moveOneStep(position, direction):
 	return {
 			Direction.left : Position(position.x - 1, position.y),
