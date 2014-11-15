@@ -51,11 +51,10 @@ def getNextPositions(grid, position):
 	next_positions = []
 	for direction in Direction:
 		proposed_position = moveOneStep(position, direction)
-		withinLimits = withinGridLimits(grid, position)
-		isIncreasing = isNextPositionValueGreaterThanCurrentValue(position, proposed_position)
-		isVisitable = isPositionVisitable(position, proposed_position)
-		print "CHECKING IN NODE %s %s %s %s " % (proposed_position, isIncreasing, isVisitable, withinLimits)
-		if (withinLimits and isIncreasing and isVisitable):
+		print "PROP POSITION: %s" % proposed_position
+		if (withinGridLimits(grid, proposed_position) 
+			and isNextPositionValueGreaterThanCurrentValue(position, proposed_position) 
+			and isPositionVisitable(position, proposed_position)):
 			next_positions.append(proposed_position)
 	return next_positions
 
@@ -70,8 +69,22 @@ def getValueAtPosition(array, position):
 	return array[position.y][position.x]
 
 # tests
-print getNextPositions(numbers, Position(0,0))[0]
+#print "GET POSITIONNNNS::::::"
+#for x in getNextPositions(numbers, Position(0,0)):
+#	print x
 
-#def findLongestIncreasingPath(curr_pos):
+def findLongestIncreasingPath(curr_pos):
+	# this should only happened once. For the very first position put in
+	if steps_taken[curr_pos.y][curr_pos.x] == 0:
+		steps_taken[curr_pos.y][curr_pos.x] += 1
+	print "CURRENT NODE: %s" % curr_pos
+	for next_pos in getNextPositions(numbers, curr_pos):
+		# since next_pos already went through validation and is a valid next step
+		# capture steps taken by adding 1 more to our aggregate count stored in steps_taken[y][x]
+		steps_taken[next_pos.y][next_pos.x] = steps_taken[curr_pos.y][curr_pos.x] + 1
+		findLongestIncreasingPath(next_pos)
+
+findLongestIncreasingPath(Position(0,0))
+print steps_taken
 
 
