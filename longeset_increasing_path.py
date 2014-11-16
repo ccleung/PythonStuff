@@ -9,47 +9,18 @@ from direction import Direction
 max_step_value = 0
 last_position_in_longest_path = None
 
-max_height = 4
-max_width = 4
-
-# record the number of steps taken at each position, and also previous Position we came from
-positions_history = [[Position(idx, idy) for idx, x in enumerate(xrange(max_width))] for idy, x in enumerate(xrange(max_height))]
-
+max_height = 5
+max_width = 5
 
 # the 2d array where we need to find the longest path of increasing int's
 # no diagnoal movement, only left up right down
 numbers = [[0 for x in xrange(max_width)] for x in xrange(max_height)]
 
-'''
-|  3   4  2  5   |
-|	 1	 7  10 12	 |
-|	 5	 8	20 15  |
-|	 2	 31	30 40  |
-'''
+def initializePositionsHistoryArray():
+	return [[Position(idx, idy) for idx, x in enumerate(xrange(max_width))] for idy, x in enumerate(xrange(max_height))]
 
-y = 0
-x = 0
-numbers[y][x] = 3
-numbers[0][1] = 4
-numbers[0][2] = 2
-numbers[0][3] = 5
-
-numbers[1][0] = 1
-numbers[1][1] = 7
-numbers[1][2] = 10
-numbers[1][3] = 12
-
-numbers[2][0] = 5
-numbers[2][1] = 8
-numbers[2][2] = 20
-numbers[2][3] = 15
-
-numbers[3][0] = 2
-numbers[3][1] = 31
-numbers[3][2] = 30
-numbers[3][3] = 40
-
-print numbers
+# record the number of steps taken at each position, and also previous Position we came from
+positions_history = []
 
 def getNextPositions(grid, cur_pos):
 	next_positions = []
@@ -88,9 +59,7 @@ def printResults():
 		for idx, x in enumerate(xrange(max_width)):
 			print positions_history[idy][idx]
 
-printResults()
-
-def findLongestIncreasingPath(curr_pos, start_indexes_evaluated):
+def findLongestIncreasingPath(curr_pos):
 	global max_step_value
 	global last_position_in_longest_path
 	# this should only happened once. For the very first position put in
@@ -105,37 +74,107 @@ def findLongestIncreasingPath(curr_pos, start_indexes_evaluated):
 		# check if our position is still visitable, because some other path might have come here
 		# first during recursive dfs
 		if isPositionVisitable(position, next_pos):
-			# only evaluate
-			if next_pos not in start_indexes_evaluated:
 				# since next_pos already went through validation and is a valid next step
 				# capture steps taken by adding 1 more to our aggregate count stored in positions_history[y][x]
 				next_pos.value = position.value + 1
 				next_pos.prev_position = position
-				findLongestIncreasingPath(next_pos, start_indexes_evaluated)
-			else:
-				# attach to the already evaluated start_index and finish
-				next_pos.prev_position = curr_pos
+				findLongestIncreasingPath(next_pos)
 
-def goBananasEvaluateAtEachIndex():
-	set_of_start_indexes_evaluated = set()
+def goBanansFindLongestPath():
+	global positions_history
+	# these are local
+	save_longest_path_length = 0
+	save_last_pos_for_longest_path_index = None
 	for idy, x in enumerate(xrange(max_height)):
 		for idx, x in enumerate(xrange(max_width)):
-			position = positionsHistoryValueAt(Position(idx, idy))
-			if position.value > 0:
-				#already evaluated
-				continue
-				# if we intersect with any of the previously evaluated nodes, we have to add on
-				# if we intersect with a node that has already been evaluated, check against 
-				# the node's current value as always
-			findLongestIncreasingPath(Position(idx,idy), set_of_start_indexes_evaluated)
-			set_of_start_indexes_evaluated.add(position)
-	for x in set_of_start_indexes_evaluated:
-		print x
+			positions_history = initializePositionsHistoryArray()
+			#printResults()
+			print '############### BEGIN ###############'
+			findLongestIncreasingPath(Position(idx,idy))
+			print '############### END   ###############'
+			if max_step_value > save_longest_path_length:
+				save_longest_path_length = max_step_value
+				save_last_pos_for_longest_path_index = last_position_in_longest_path
+				print "MAX STEP VALUE SO FAR: %s %s" % (save_longest_path_length, save_last_pos_for_longest_path_index)
+	return (save_longest_path_length, save_last_pos_for_longest_path_index)
 
-goBananasEvaluateAtEachIndex()
 
-print "LAST NODE: %s" % last_position_in_longest_path
+# test path 1
+'''
+|  3   4  2  5   |
+|	 1	 7  10 12	 |
+|	 5	 8	20 15  |
+|	 2	 31	30 40  |
+'''
+
+y = 0
+x = 0
+numbers[y][x] = 3
+numbers[0][1] = 4
+numbers[0][2] = 2
+numbers[0][3] = 5
+
+numbers[1][0] = 1
+numbers[1][1] = 7
+numbers[1][2] = 10
+numbers[1][3] = 12
+
+numbers[2][0] = 5
+numbers[2][1] = 8
+numbers[2][2] = 20
+numbers[2][3] = 15
+
+numbers[3][0] = 2
+numbers[3][1] = 31
+numbers[3][2] = 30
+numbers[3][3] = 40
+
+results = goBanansFindLongestPath()
+print "LAST NODE: %s" % results[0]
 print "PATH TO BEGINNING: "
-printPath(last_position_in_longest_path)
+printPath(results[1])
+
+# test 2
+'''
+|  1   4  15  11  10 |
+|	 2	 7  8   8	  9  |
+|	 3	 4	7   7   6  |
+|	 2	 3	3   4   5  |
+|  0   1  2   1   0  |
+'''
+numbers[y][x] = 1
+numbers[0][1] = 4
+numbers[0][2] = 15
+numbers[0][3] = 11
+numbers[0][4] = 10
+
+numbers[1][0] = 2
+numbers[1][1] = 7
+numbers[1][2] = 8
+numbers[1][3] = 8
+numbers[1][4] = 9
+
+numbers[2][0] = 3
+numbers[2][1] = 4
+numbers[2][2] = 7
+numbers[2][3] = 7
+numbers[2][4] = 6
+
+numbers[3][0] = 2
+numbers[3][1] = 3
+numbers[3][2] = 4
+numbers[3][3] = 4
+numbers[3][4] = 5
+
+numbers[4][0] = 0
+numbers[4][1] = 1
+numbers[4][2] = 2
+numbers[4][3] = 1
+numbers[4][4] = 0
+
+results = goBanansFindLongestPath()
+print "LAST NODE: %s" % results[0]
+print "PATH TO BEGINNING: "
+printPath(results[1])
 
 
