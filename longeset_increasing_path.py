@@ -162,7 +162,7 @@ numbers[2][4] = 6
 
 numbers[3][0] = 2
 numbers[3][1] = 3
-numbers[3][2] = 4
+numbers[3][2] = 3
 numbers[3][3] = 4
 numbers[3][4] = 5
 
