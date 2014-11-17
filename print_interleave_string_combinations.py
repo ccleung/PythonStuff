@@ -15,7 +15,8 @@ assume starting character is empty ('')
               e       o           e       o
             /   \   /   \       /   \   /   \
            l     r l     r     l     r l     r 
-          / \   / \  
+         / \   / \  /\   /\    /\   /\  /\   /\
+
 
 There should be at most 2^h - 1 nodes, or combinations
 '''
@@ -33,12 +34,15 @@ def print_all_combinations(concatonated_results, chosen_char, string_1, string_2
 	else:
 		print "WHOAAAA WE GOT A DUPLICATE"
 		results[concatonated_results] += 1
-	print concatonated_results
+	#print "STRING1 %s and STRING2 %s" % (string_1, string_2)
 	# really only two possibilities here:
 	# 1.) we take the first character of the first string
 	# 2.) we take the first character of the second string
-	print_all_combinations(concatonated_results, string_1[:1], string_1[1:], string_2)
-	print_all_combinations(concatonated_results, string_2[:1], string_1, string_2[1:])
+	print "RESULT: %s %s" % (concatonated_results, len(results.keys()))
+	string_1_truncated = string_1[1:] if len(string_1[1:]) > 1 else ""
+	string_2_truncated = string_2[1:] if len(string_2[1:]) > 1 else ""
+	print_all_combinations(concatonated_results, string_1[:1], string_1_truncated, string_2)
+	print_all_combinations(concatonated_results, string_2[:1], string_1, string_2_truncated)
 
 
 print_all_combinations("", "", string_1, string_2)
