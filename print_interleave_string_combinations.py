@@ -12,11 +12,10 @@ assume starting character is empty ('')
                    /                 \
                   h                   w
                /     \             /     \
-              e       o           e       o
+              e       w           h       o
             /   \   /   \       /   \   /   \
-           l     r l     r     l     r l     r 
-         / \   / \  /\   /\    /\   /\  /\   /\
-
+           l     w e     o     e     o h     r 
+         / \   / \  /\   /\    /\   /\  /\   /\        
 
 There should be at most 2^h - 1 nodes, or combinations
 '''
@@ -47,11 +46,14 @@ def print_all_combinations(concatonated_results, chosen_char, string_1, string_2
 
 print_all_combinations("", "", string_1, string_2)
 
+# check for duplicates
 for key, value in results.iteritems():
 	if value > 1:
 		print "DUPLICATE ITEM: %s %s" % (key, value)
 print len(results.keys())
 
+# not correct since our number of combinations is more complex than 
+# just the depth of the binary tree of choices
 max_possiblities = math.pow(2, max(len(string_1), len(string_2))+1) - 1
 print "MAXIMUM NUMBER OF POSSIBILITIES SHOULD BE: %s" % max_possiblities
 
